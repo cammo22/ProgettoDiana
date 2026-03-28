@@ -138,7 +138,7 @@
     @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
 
     /* SECTIONS */
-    section { padding: 100px 5%; }
+    section { padding: 100px 5%; scroll-margin-top: 70px; }
     .section-tag {
       display: inline-block; font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase;
       color: var(--gold); margin-bottom: 12px;
@@ -448,7 +448,7 @@
     .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
     .footer-col ul li a { font-size: 0.87rem; color: rgba(255,255,255,0.55); transition: color 0.3s; }
     .footer-col ul li a:hover { color: var(--gold); }
-    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
     .footer-bottom p { font-size: 0.8rem; color: rgba(255,255,255,0.25); }
     .footer-legal { display: flex; gap: 24px; }
     .footer-legal a { font-size: 0.78rem; color: rgba(255,255,255,0.25); transition: color 0.3s; }
@@ -485,6 +485,9 @@
       .reviews-header { flex-direction: column; gap: 16px; align-items: flex-start; }
       .about-values { grid-template-columns: 1fr; }
       .metodo-grid { grid-template-columns: 1fr; }
+      .tab-btn { border-radius: 8px !important; flex: 1 1 calc(50% - 4px); min-width: 140px; }
+      .tab-buttons { gap: 8px; }
+      .booking-form { padding: 24px 20px; }
     }
   </style>
 </head>
