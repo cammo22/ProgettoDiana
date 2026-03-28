@@ -8,7 +8,7 @@
 
 <br>
 
-[![Visita il Sito](https://img.shields.io/badge/🌐%20Visita%20il%20Sito-Progetto%20Diana-C9A052?style=for-the-badge&labelColor=1C1C1C)](https://TUO-USERNAME.github.io/ProgettoDiana)
+[![Visita il Sito](https://img.shields.io/badge/🌐%20Visita%20il%20Sito-Progetto%20Diana-C9A052?style=for-the-badge&labelColor=1C1C1C)](https://cammo22.github.io/ProgettoDiana/)
 
 </div>
 
@@ -140,9 +140,7 @@ ProgettoDiana/
 2. Carica i file: `index.html`, `logo.jpg`, `logo-loop.mp4`
 3. Vai su **Settings → Pages**
 4. Imposta **Source** su `Deploy from a branch` → `main` → `/ (root)`
-5. Salva — il sito sarà live su `https://TUO-USERNAME.github.io/ProgettoDiana`
-
-> Ricordati di aggiornare il link nel badge in cima a questo README con il tuo username GitHub.
+5. Salva — il sito è live su [https://cammo22.github.io/ProgettoDiana/](https://cammo22.github.io/ProgettoDiana/)
 
 ---
 
