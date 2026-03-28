@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progetto Diana — Medicina Estetica</title>
+  <meta name="description" content="Progetto Diana — Centro di medicina estetica e bellezza. Trattamenti viso, corpo, laser, filler, botox e molto altro. Risultati naturali, tecnologia avanzata.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C9A052;
+      --gold-light: #E8D5A3;
+      --gold-dark: #9A7430;
+      --purple: #9B7FBD;
+      --purple-light: #D4C5E8;
+      --purple-dark: #6B4F8D;
+      --dark: #1C1C1C;
+      --gray: #6B6B6B;
+      --light: #F8F5F0;
+      --white: #FFFFFF;
+      --cream: #FAF7F2;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--dark); overflow-x: hidden; }
+    h1,h2,h3,h4,h5 { font-family: 'Playfair Display', serif; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; }
+
+    /* LOADER */
+    #loader {
+      position: fixed; inset: 0; background: var(--dark); display: flex; align-items: center; justify-content: center;
+      z-index: 9999; transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    #loader.hidden { opacity: 0; visibility: hidden; }
+    .loader-logo { width: 120px; animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:0.4;transform:scale(0.95)} 50%{opacity:1;transform:scale(1.05)} }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 20px 5%; display: flex; align-items: center; justify-content: space-between;
+      transition: all 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(250,247,242,0.97); backdrop-filter: blur(12px);
+      padding: 12px 5%; box-shadow: 0 2px 30px rgba(0,0,0,0.08);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 12px; }
+    .nav-logo img { height: 50px; width: auto; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15)); }
+    .nav-logo-text { display: flex; flex-direction: column; }
+    .nav-logo-text span:first-child { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
+    .nav-logo-text span:last-child { font-size: 0.65rem; color: var(--purple); letter-spacing: 3px; text-transform: uppercase; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { font-size: 0.85rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(--white); transition: color 0.3s; }
+    nav.scrolled .nav-links a { color: var(--dark); }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: var(--white) !important; padding: 10px 24px; border-radius: 50px;
+      font-size: 0.85rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+      transition: all 0.3s; box-shadow: 0 4px 15px rgba(201,160,82,0.4);
+    }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(201,160,82,0.5); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
+    .hamburger span { width: 24px; height: 2px; background: var(--white); transition: all 0.3s; border-radius: 2px; }
+    nav.scrolled .hamburger span { background: var(--dark); }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu {
+      display: none; position: fixed; inset: 0; background: var(--dark); z-index: 999;
+      flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--white); transition: color 0.3s; }
+    .mobile-menu a:hover { color: var(--gold); }
+
+    /* HERO */
+    #hero {
+      position: relative; height: 100vh; min-height: 600px;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+    #hero-video {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(160deg, rgba(28,28,28,0.7) 0%, rgba(107,79,141,0.4) 50%, rgba(28,28,28,0.6) 100%);
+    }
+    .hero-content {
+      position: relative; z-index: 2; text-align: center; padding: 0 20px; max-width: 800px;
+    }
+    .hero-tag {
+      display: inline-block; border: 1px solid rgba(201,160,82,0.6);
+      color: var(--gold-light); font-size: 0.75rem; letter-spacing: 4px; text-transform: uppercase;
+      padding: 6px 20px; border-radius: 50px; margin-bottom: 24px;
+      animation: fadeUp 0.8s ease both 0.3s;
+    }
+    .hero-title {
+      font-size: clamp(2.4rem, 6vw, 4.5rem); color: var(--white);
+      line-height: 1.1; margin-bottom: 16px;
+      animation: fadeUp 0.8s ease both 0.5s;
+    }
+    .hero-title em { color: var(--gold-light); font-style: italic; }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem); color: rgba(255,255,255,0.8);
+      font-weight: 300; letter-spacing: 1px; margin-bottom: 40px;
+      animation: fadeUp 0.8s ease both 0.7s;
+    }
+    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; animation: fadeUp 0.8s ease both 0.9s; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: var(--white); padding: 14px 36px; border-radius: 50px;
+      font-weight: 600; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase;
+      transition: all 0.3s; box-shadow: 0 6px 25px rgba(201,160,82,0.45);
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(201,160,82,0.55); }
+    .btn-outline {
+      border: 1.5px solid rgba(255,255,255,0.7); color: var(--white);
+      padding: 14px 36px; border-radius: 50px; font-weight: 500; font-size: 0.9rem;
+      letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s;
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.15); border-color: var(--gold); color: var(--gold-light); }
+    .hero-scroll {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: rgba(255,255,255,0.6); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
+      animation: fadeUp 1s ease both 1.2s;
+    }
+    .scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, rgba(201,160,82,0.8), transparent);
+      animation: scrollAnim 2s ease-in-out infinite;
+    }
+    @keyframes scrollAnim { 0%{opacity:1;transform:scaleY(1) translateY(0)} 100%{opacity:0;transform:scaleY(0.5) translateY(20px)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+
+    /* SECTIONS */
+    section { padding: 100px 5%; }
+    .section-tag {
+      display: inline-block; font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 12px;
+    }
+    .section-title { font-size: clamp(1.8rem, 3.5vw, 2.8rem); color: var(--dark); margin-bottom: 16px; line-height: 1.2; }
+    .section-title span { color: var(--gold); }
+    .section-line {
+      width: 60px; height: 2px; margin-bottom: 24px;
+      background: linear-gradient(to right, var(--gold), var(--purple));
+    }
+    .section-desc { font-size: 1rem; color: var(--gray); line-height: 1.8; max-width: 600px; }
+
+    /* ABOUT */
+    #about { background: var(--white); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .about-img-wrap {
+      position: relative; border-radius: 20px; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+    }
+    .about-img-wrap::before {
+      content: ''; position: absolute; inset: -2px; z-index: -1; border-radius: 22px;
+      background: linear-gradient(135deg, var(--gold), var(--purple));
+    }
+    .about-img-wrap img { width: 100%; display: block; border-radius: 18px; }
+    .about-badges {
+      position: absolute; bottom: 24px; left: 24px; right: 24px;
+      display: flex; gap: 12px; flex-wrap: wrap;
+    }
+    .badge {
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(8px);
+      border-radius: 50px; padding: 8px 16px; font-size: 0.78rem;
+      font-weight: 600; color: var(--dark); box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .badge .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .dot-gold { background: var(--gold); }
+    .dot-purple { background: var(--purple); }
+    .about-text { display: flex; flex-direction: column; gap: 20px; }
+    .about-text p { color: var(--gray); line-height: 1.8; }
+    .about-values { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px; }
+    .value-card {
+      background: var(--cream); border-radius: 12px; padding: 20px;
+      border-left: 3px solid var(--gold); transition: transform 0.3s;
+    }
+    .value-card:hover { transform: translateX(4px); }
+    .value-card h4 { font-size: 0.95rem; color: var(--dark); margin-bottom: 6px; }
+    .value-card p { font-size: 0.82rem; color: var(--gray); line-height: 1.6; }
+
+    /* STATS */
+    #stats { background: linear-gradient(135deg, var(--dark) 0%, #2d1f3d 100%); padding: 70px 5%; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; text-align: center; }
+    .stat-item { padding: 20px; }
+    .stat-num {
+      font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      line-height: 1;
+    }
+    .stat-label { color: rgba(255,255,255,0.6); font-size: 0.82rem; letter-spacing: 2px; text-transform: uppercase; margin-top: 8px; }
+    .stat-sep { width: 1px; background: rgba(255,255,255,0.1); }
+
+    /* SERVICES */
+    #servizi { background: var(--cream); }
+    .services-header { text-align: center; margin-bottom: 50px; }
+    .services-header .section-line { margin: 0 auto 24px; }
+    .tab-buttons { display: flex; justify-content: center; gap: 0; margin-bottom: 50px; flex-wrap: wrap; }
+    .tab-btn {
+      padding: 14px 28px; border: none; background: var(--white); cursor: pointer;
+      font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 500; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--gray); transition: all 0.3s;
+      border-bottom: 2px solid transparent;
+    }
+    .tab-btn:first-child { border-radius: 8px 0 0 8px; }
+    .tab-btn:last-child { border-radius: 0 8px 8px 0; }
+    .tab-btn.active { background: var(--dark); color: var(--gold-light); border-bottom-color: var(--gold); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+    .service-card {
+      background: var(--white); border-radius: 16px; overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: all 0.3s; cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .service-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0,0,0,0.12); border-color: var(--gold-light); }
+    .service-card-header {
+      padding: 28px 24px 20px;
+      background: linear-gradient(135deg, var(--cream), var(--white));
+      display: flex; align-items: flex-start; gap: 16px;
+    }
+    .service-icon {
+      width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+    }
+    .icon-gold { background: linear-gradient(135deg, rgba(201,160,82,0.15), rgba(201,160,82,0.05)); }
+    .icon-purple { background: linear-gradient(135deg, rgba(155,127,189,0.15), rgba(155,127,189,0.05)); }
+    .icon-dark { background: linear-gradient(135deg, rgba(28,28,28,0.08), rgba(28,28,28,0.02)); }
+    .service-card-header h3 { font-size: 1.05rem; color: var(--dark); margin-bottom: 4px; line-height: 1.3; }
+    .service-card-header p { font-size: 0.8rem; color: var(--gray); }
+    .service-card-body { padding: 0 24px; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease; }
+    .service-card.expanded .service-card-body { max-height: 300px; padding-bottom: 20px; }
+    .service-card-body ul { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+    .service-card-body ul li { font-size: 0.85rem; color: var(--gray); display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; }
+    .service-card-body ul li::before { content: '→'; color: var(--gold); font-size: 0.75rem; margin-top: 1px; flex-shrink: 0; }
+    .service-card-footer { padding: 16px 24px; border-top: 1px solid var(--light); display: flex; justify-content: space-between; align-items: center; }
+    .expand-btn { font-size: 0.78rem; color: var(--gold); font-weight: 600; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; transition: gap 0.3s; }
+    .service-card:hover .expand-btn { gap: 10px; }
+    .expand-arrow { transition: transform 0.3s; }
+    .service-card.expanded .expand-arrow { transform: rotate(90deg); }
+
+    /* TECH SECTION */
+    #tecnologie { background: var(--white); }
+    .tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; margin-top: 50px; }
+    .tech-card {
+      border: 1px solid var(--light); border-radius: 16px; padding: 28px 20px; text-align: center;
+      transition: all 0.3s; position: relative; overflow: hidden;
+    }
+    .tech-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(201,160,82,0.05), rgba(155,127,189,0.05));
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .tech-card:hover { transform: translateY(-4px); border-color: var(--gold-light); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+    .tech-card:hover::before { opacity: 1; }
+    .tech-icon { font-size: 2.4rem; margin-bottom: 16px; display: block; }
+    .tech-card h3 { font-size: 0.95rem; color: var(--dark); margin-bottom: 8px; }
+    .tech-card p { font-size: 0.8rem; color: var(--gray); line-height: 1.6; }
+    .tech-badge {
+      display: inline-block; margin-top: 12px; font-size: 0.68rem; letter-spacing: 1.5px;
+      text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
+      background: var(--cream); color: var(--gold); font-weight: 600;
+    }
+
+    /* METODO */
+    #metodo { background: var(--cream); }
+    .metodo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 50px; }
+    .step {
+      padding: 40px 24px; position: relative; text-align: center;
+      border-right: 1px solid rgba(201,160,82,0.2); transition: background 0.3s;
+    }
+    .step:last-child { border-right: none; }
+    .step:hover { background: var(--white); }
+    .step-num {
+      font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 700;
+      color: var(--gold-light); line-height: 1; margin-bottom: 16px; display: block;
+    }
+    .step h3 { font-size: 1.1rem; color: var(--dark); margin-bottom: 12px; }
+    .step p { font-size: 0.85rem; color: var(--gray); line-height: 1.7; }
+
+    /* BEFORE AFTER */
+    #risultati { background: var(--dark); padding: 100px 5%; }
+    #risultati .section-title { color: var(--white); }
+    #risultati .section-desc { color: rgba(255,255,255,0.6); }
+    .ba-container { margin-top: 50px; }
+    .ba-tabs { display: flex; gap: 12px; margin-bottom: 30px; flex-wrap: wrap; }
+    .ba-tab {
+      padding: 10px 20px; border: 1px solid rgba(201,160,82,0.3); border-radius: 50px;
+      font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase;
+      color: rgba(255,255,255,0.6); cursor: pointer; transition: all 0.3s;
+    }
+    .ba-tab.active { background: var(--gold); border-color: var(--gold); color: var(--white); }
+    .ba-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .ba-card {
+      border-radius: 16px; overflow: hidden; position: relative;
+      aspect-ratio: 3/4; background: linear-gradient(135deg, #2d2d2d, #1a1a1a);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      border: 1px solid rgba(201,160,82,0.15);
+    }
+    .ba-card-inner { text-align: center; padding: 20px; }
+    .ba-card-inner .ba-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.4; }
+    .ba-card-inner p { color: rgba(255,255,255,0.4); font-size: 0.8rem; line-height: 1.5; }
+    .ba-label {
+      position: absolute; top: 16px; left: 16px;
+      background: var(--gold); color: var(--white); font-size: 0.7rem;
+      letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; border-radius: 4px;
+    }
+    .ba-treatment {
+      position: absolute; bottom: 16px; left: 16px; right: 16px;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+      border-radius: 8px; padding: 10px 14px;
+    }
+    .ba-treatment h4 { color: var(--gold-light); font-size: 0.85rem; margin-bottom: 2px; }
+    .ba-treatment p { color: rgba(255,255,255,0.6); font-size: 0.75rem; }
+
+    /* TESTIMONIALS */
+    #testimonianze { background: var(--white); }
+    .reviews-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 50px; }
+    .rating-summary { text-align: right; }
+    .big-rating { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--dark); line-height: 1; }
+    .stars-row { color: var(--gold); font-size: 1.2rem; letter-spacing: 2px; }
+    .rating-label { font-size: 0.8rem; color: var(--gray); margin-top: 4px; }
+    .reviews-slider { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .review-card {
+      background: var(--cream); border-radius: 16px; padding: 32px;
+      border: 1px solid var(--light); transition: all 0.3s; position: relative;
+    }
+    .review-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+    .review-stars { color: var(--gold); font-size: 1rem; letter-spacing: 2px; margin-bottom: 16px; }
+    .review-text { font-size: 0.9rem; color: var(--dark); line-height: 1.8; margin-bottom: 20px; font-style: italic; }
+    .review-author { display: flex; align-items: center; gap: 12px; }
+    .author-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-light), var(--purple-light));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--dark); font-weight: 700;
+    }
+    .author-info h4 { font-size: 0.9rem; color: var(--dark); margin-bottom: 2px; }
+    .author-info span { font-size: 0.78rem; color: var(--gray); }
+    .review-quote {
+      position: absolute; top: 20px; right: 24px;
+      font-family: 'Playfair Display', serif; font-size: 4rem; color: var(--gold-light);
+      line-height: 1; opacity: 0.5;
+    }
+
+    /* FAQ */
+    #faq { background: var(--cream); }
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 50px; }
+    .faq-item {
+      background: var(--white); border-radius: 12px; overflow: hidden;
+      border: 1px solid var(--light); transition: all 0.3s;
+    }
+    .faq-item.open { border-color: var(--gold-light); }
+    .faq-question {
+      padding: 20px 24px; cursor: pointer; display: flex; justify-content: space-between;
+      align-items: center; gap: 16px; font-weight: 500; font-size: 0.95rem; color: var(--dark);
+    }
+    .faq-icon { width: 24px; height: 24px; border-radius: 50%; background: var(--cream); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s; font-size: 0.9rem; color: var(--gold); }
+    .faq-item.open .faq-icon { background: var(--gold); color: var(--white); transform: rotate(45deg); }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .faq-item.open .faq-answer { max-height: 200px; }
+    .faq-answer p { padding: 0 24px 20px; font-size: 0.87rem; color: var(--gray); line-height: 1.8; }
+
+    /* TEAM */
+    #team { background: var(--white); }
+    .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 50px; }
+    .team-card {
+      text-align: center; transition: transform 0.3s;
+    }
+    .team-card:hover { transform: translateY(-6px); }
+    .team-photo {
+      width: 160px; height: 160px; border-radius: 50%; margin: 0 auto 20px;
+      background: linear-gradient(135deg, var(--gold-light), var(--purple-light));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem; position: relative; overflow: hidden;
+      border: 4px solid var(--white); box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+    .team-photo::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(201,160,82,0.3), rgba(155,127,189,0.3));
+    }
+    .team-photo span { position: relative; z-index: 1; }
+    .team-card h3 { font-size: 1.15rem; color: var(--dark); margin-bottom: 4px; }
+    .team-card .role { font-size: 0.8rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+    .team-card p { font-size: 0.85rem; color: var(--gray); line-height: 1.7; max-width: 280px; margin: 0 auto; }
+    .team-specialties { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 16px; }
+    .specialty-tag {
+      font-size: 0.72rem; padding: 4px 10px; border-radius: 20px;
+      background: var(--cream); color: var(--gray); border: 1px solid var(--light);
+    }
+
+    /* BOOKING */
+    #prenota { background: linear-gradient(160deg, var(--dark), #2d1f3d); }
+    #prenota .section-title { color: var(--white); }
+    #prenota .section-desc { color: rgba(255,255,255,0.6); }
+    .booking-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start; margin-top: 50px; }
+    .booking-info { display: flex; flex-direction: column; gap: 32px; }
+    .contact-item { display: flex; gap: 16px; align-items: flex-start; }
+    .contact-icon {
+      width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
+      background: rgba(201,160,82,0.15); display: flex; align-items: center;
+      justify-content: center; font-size: 1.3rem;
+    }
+    .contact-item h4 { color: rgba(255,255,255,0.9); font-size: 0.9rem; margin-bottom: 4px; }
+    .contact-item p, .contact-item a { color: rgba(255,255,255,0.55); font-size: 0.87rem; line-height: 1.6; }
+    .contact-item a:hover { color: var(--gold); }
+    .social-links { display: flex; gap: 12px; }
+    .social-link {
+      width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+      color: rgba(255,255,255,0.6); transition: all 0.3s;
+    }
+    .social-link:hover { background: var(--gold); border-color: var(--gold); color: var(--white); transform: translateY(-2px); }
+    .booking-form { background: rgba(255,255,255,0.05); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 40px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 8px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px; padding: 12px 16px; color: var(--white); font-family: 'Inter', sans-serif;
+      font-size: 0.9rem; transition: all 0.3s; outline: none;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); background: rgba(255,255,255,0.1); }
+    .form-group select option { background: var(--dark); }
+    .form-group textarea { resize: none; height: 100px; }
+    .form-submit { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); border: none; border-radius: 10px; color: var(--white); font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.3s; margin-top: 8px; }
+    .form-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(201,160,82,0.4); }
+    .form-success { display: none; text-align: center; padding: 40px 20px; }
+    .form-success h3 { color: var(--white); font-size: 1.4rem; margin-bottom: 12px; }
+    .form-success p { color: rgba(255,255,255,0.6); font-size: 0.9rem; }
+    .form-success .success-icon { font-size: 3rem; margin-bottom: 20px; }
+
+    /* FOOTER */
+    footer { background: #111; padding: 60px 5% 30px; }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 50px; margin-bottom: 50px; }
+    .footer-brand .nav-logo-text span:first-child { font-size: 1.2rem; }
+    .footer-brand p { color: rgba(255,255,255,0.4); font-size: 0.85rem; line-height: 1.8; margin-top: 16px; max-width: 260px; }
+    .footer-col h4 { font-family: 'Inter', sans-serif; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li a { font-size: 0.87rem; color: rgba(255,255,255,0.55); transition: color 0.3s; }
+    .footer-col ul li a:hover { color: var(--gold); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; }
+    .footer-bottom p { font-size: 0.8rem; color: rgba(255,255,255,0.25); }
+    .footer-legal { display: flex; gap: 24px; }
+    .footer-legal a { font-size: 0.78rem; color: rgba(255,255,255,0.25); transition: color 0.3s; }
+    .footer-legal a:hover { color: var(--gold); }
+
+    /* FADE IN ANIMATION */
+    .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-sep { display: none; }
+      .metodo-grid { grid-template-columns: repeat(2, 1fr); }
+      .step { border-right: none; border-bottom: 1px solid rgba(201,160,82,0.2); }
+      .step:nth-child(even) { border-right: none; }
+      .ba-grid { grid-template-columns: repeat(2, 1fr); }
+      .reviews-slider { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .booking-grid { grid-template-columns: 1fr; gap: 40px; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    }
+    @media (max-width: 768px) {
+      section { padding: 70px 5%; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .faq-grid { grid-template-columns: 1fr; }
+      .ba-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+      .reviews-header { flex-direction: column; gap: 16px; align-items: flex-start; }
+      .about-values { grid-template-columns: 1fr; }
+      .metodo-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <img src="logo.jpg" alt="Progetto Diana" class="loader-logo">
+</div>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMobile()">Chi Siamo</a>
+  <a href="#servizi" onclick="closeMobile()">Servizi</a>
+  <a href="#tecnologie" onclick="closeMobile()">Tecnologie</a>
+  <a href="#risultati" onclick="closeMobile()">Risultati</a>
+  <a href="#team" onclick="closeMobile()">Team</a>
+  <a href="#prenota" onclick="closeMobile()" style="color:var(--gold)">Prenota</a>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <img src="logo.jpg" alt="Progetto Diana">
+    <div class="nav-logo-text">
+      <span>Progetto Diana</span>
+      <span>Medicina Estetica</span>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about">Chi Siamo</a></li>
+    <li><a href="#servizi">Servizi</a></li>
+    <li><a href="#tecnologie">Tecnologie</a></li>
+    <li><a href="#risultati">Risultati</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#prenota" class="nav-cta">Prenota</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <video id="hero-video" autoplay muted loop playsinline poster="logo.jpg">
+    <source src="logo-loop.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-tag">✦ Medicina Estetica · Centro Benessere ✦</div>
+    <h1 class="hero-title">La tua <em>bellezza</em><br>è il nostro progetto</h1>
+    <p class="hero-sub">Trattamenti su misura, tecnologie all'avanguardia,<br>risultati naturali che durano nel tempo.</p>
+    <div class="hero-btns">
+      <a href="#prenota" class="btn-primary">Prenota Consulenza</a>
+      <a href="#servizi" class="btn-outline">Scopri i Servizi</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scorri</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-img-wrap fade-in">
+      <img src="logo.jpg" alt="Progetto Diana — Il nostro studio" style="aspect-ratio:1;object-fit:cover;">
+      <div class="about-badges">
+        <div class="badge"><div class="dot dot-gold"></div> Medici Certificati</div>
+        <div class="badge"><div class="dot dot-purple"></div> Tecnologie Avanzate</div>
+      </div>
+    </div>
+    <div class="about-text fade-in">
+      <div>
+        <p class="section-tag">✦ Il Nostro Studio</p>
+        <h2 class="section-title">Dove la scienza<br>incontra la <span>bellezza</span></h2>
+        <div class="section-line"></div>
+      </div>
+      <p>Progetto Diana nasce da una visione chiara: offrire a ogni persona un percorso di bellezza personalizzato, dove la medicina estetica e la cura del corpo si fondono in un'esperienza esclusiva e consapevole.</p>
+      <p>Il nostro centro unisce la competenza medica ai trattamenti estetici più avanzati, in un ambiente curato, accogliente e rigorosamente professionale. Ogni trattamento è preceduto da una consulenza approfondita per garantire risultati autentici e duraturi.</p>
+      <div class="about-values">
+        <div class="value-card">
+          <h4>Approccio Medico</h4>
+          <p>Ogni percorso è guidato da professionisti qualificati con formazione medica specializzata.</p>
+        </div>
+        <div class="value-card">
+          <h4>Risultati Naturali</h4>
+          <p>Esaltiamo la tua bellezza senza stravolgere la tua unicità. Il risultato ideale: nessuno lo nota, ma tutti vedono la differenza.</p>
+        </div>
+        <div class="value-card">
+          <h4>Tecnologie Avanzate</h4>
+          <p>Utilizziamo solo apparecchiature certificate di ultima generazione, con protocolli costantemente aggiornati.</p>
+        </div>
+        <div class="value-card">
+          <h4>Cura Totale</h4>
+          <p>Dal viso al corpo, dall'estetica alla medicina: tutto in un unico centro pensato per te.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div id="stats">
+  <div class="stats-grid">
+    <div class="stat-item fade-in">
+      <div class="stat-num" data-count="2500">0</div>
+      <div class="stat-label">Clienti Soddisfatte</div>
+    </div>
+    <div class="stat-item fade-in">
+      <div class="stat-num" data-count="30">0</div>
+      <div class="stat-label">Trattamenti Disponibili</div>
+    </div>
+    <div class="stat-item fade-in">
+      <div class="stat-num" data-count="98">0</div>
+      <div class="stat-label">% Soddisfazione</div>
+    </div>
+    <div class="stat-item fade-in">
+      <div class="stat-num" data-count="10">0</div>
+      <div class="stat-label">Anni di Esperienza</div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="servizi">
+  <div class="services-header fade-in">
+    <p class="section-tag">✦ I Nostri Trattamenti</p>
+    <h2 class="section-title">Tutto ciò di cui hai <span>bisogno</span></h2>
+    <div class="section-line"></div>
+    <p class="section-desc">Dalla medicina estetica ai trattamenti beauty: un universo completo di cura pensato per valorizzare la tua bellezza in ogni sua sfumatura.</p>
+  </div>
+  <div class="tab-buttons fade-in">
+    <button class="tab-btn active" onclick="switchTab(event,'medicina')">💉 Medicina Estetica</button>
+    <button class="tab-btn" onclick="switchTab(event,'laser')">✨ Laser &amp; Tecnologie</button>
+    <button class="tab-btn" onclick="switchTab(event,'estetica')">🌸 Centro Estetico</button>
+    <button class="tab-btn" onclick="switchTab(event,'corpo')">🧘 Corpo &amp; Benessere</button>
+  </div>
+
+  <!-- MEDICINA ESTETICA -->
+  <div class="tab-panel active" id="tab-medicina">
+    <div class="services-grid">
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-gold">💉</div>
+          <div><h3>Tossina Botulinica</h3><p>Trattamento rughe e lifting</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Rughe frontali, glabella e zampe di gallina</li>
+            <li>Lifting non chirurgico del sopracciglio</li>
+            <li>Sorriso gengivale e bunny lines</li>
+            <li>Iperidrosi (sudorazione eccessiva)</li>
+            <li>Bruxismo e tensione mandibolare</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Risultati visibili in 3-7 gg</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-purple">💧</div>
+          <div><h3>Filler Acido Ialuronico</h3><p>Volume, definizione e riempimento</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Labbra: volume, definizione, idratazione</li>
+            <li>Zigomi e guance per un ovale armonioso</li>
+            <li>Rhinofiller — rinoplastica senza chirurgia</li>
+            <li>Rughe nasogeniene e del sorriso</li>
+            <li>Occhiaie, solco lacrimale, mento</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Effetto immediato</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-gold">✨</div>
+          <div><h3>Biorivitalizzazione</h3><p>Idratazione profonda e skinbooster</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Skinbooster con acido ialuronico reticolato</li>
+            <li>Trattamenti per viso, collo, décolleté e mani</li>
+            <li>Luminosità, compattezza ed elasticità</li>
+            <li>Profhilo e Juvederm Volite</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Ciclo 2-3 sedute</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-purple">🧬</div>
+          <div><h3>PRP — Plasma Ricco di Piastrine</h3><p>Ringiovanimento biologico</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Ringiovanimento e rigenerazione viso</li>
+            <li>Tricologia: contrasto alopecia e diradamento</li>
+            <li>Stimolazione naturale del collagene</li>
+            <li>Efficace su cicatrici e smagliature</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">100% naturale</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-gold">🧵</div>
+          <div><h3>Fili Tensori PDO</h3><p>Lifting non chirurgico</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Ridefinizione dell'ovale del viso</li>
+            <li>Lifting guance, zigomi e collo</li>
+            <li>Stimolazione del collagene endogeno</li>
+            <li>Risultati visibili subito, che migliorano nel tempo</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Effetto lifting immediato</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-purple">🔬</div>
+          <div><h3>Mesoterapia</h3><p>Cocktail attivi mirati</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Mesoterapia viso anti-age e illuminante</li>
+            <li>Tricologia: perdita capelli e diradamento</li>
+            <li>Corpo: cellulite e localizzazioni adipose</li>
+            <li>Formulazioni personalizzate per ogni esigenza</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Protocollo personalizzato</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-gold">🧪</div>
+          <div><h3>Peeling Chimici</h3><p>Rinnovamento cellulare</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Superficiali: glicolico, mandorla, lattico</li>
+            <li>Medi: TCA, Jessner — per macchie e photo-aging</li>
+            <li>Trattamento acne e cicatrici post-acneiche</li>
+            <li>Omogeneizzazione del tono cutaneo</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Pelle rinnovata</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-purple">💨</div>
+          <div><h3>Carbossiterapia</h3><p>CO₂ terapeutica</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Cellulite e adiposità localizzate</li>
+            <li>Trattamento occhiaie e rilassamento cutaneo</li>
+            <li>Rassodamento corporeo e viso</li>
+            <li>Stimolazione microcircolo</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Trattamento naturale</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LASER -->
+  <div class="tab-panel" id="tab-laser">
+    <div class="services-grid">
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-gold">⚡</div>
+          <div><h3>Laser Diodo 808nm</h3><p>Depilazione permanente</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Depilazione definitiva su viso e corpo</li>
+            <li>Efficace su tutti i fototipi cutanei</li>
+            <li>Tecnologia a impulsi lunghi — indolore</li>
+            <li>Gambe, ascelle, inguine, labbro, collo</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Risultati permanenti</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-purple">🔆</div>
+          <div><h3>HIFU — Ultrasuoni Focalizzati</h3><p>Lifting non invasivo</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Lifting viso e collo senza chirurgia</li>
+            <li>Rassodamento décolleté e corpo</li>
+            <li>Stimolazione del collagene in profondità</li>
+            <li>Zero downtime — effetto progressivo</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">1 seduta = lifting</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-gold">〰️</div>
+          <div><h3>Radiofrequenza Multipolare</h3><p>Rassodamento e rimodellamento</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Rassodamento viso, collo e corpo</li>
+            <li>Riduzione della cellulite</li>
+            <li>Stimolazione elastina e collagene</li>
+            <li>Trattamento smagliature</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">No downtime</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-purple">❄️</div>
+          <div><h3>Criolipolisi</h3><p>Eliminazione adiposità localizzate</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Distruzione selettiva delle cellule adipose</li>
+            <li>Addome, fianchi, cosce, braccia, doppio mento</li>
+            <li>Non invasiva — nessuna anestesia</li>
+            <li>Risultati visibili dalle 4-6 settimane</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Riduzione fino al 27%</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-gold">🌊</div>
+          <div><h3>Cavitazione Ultrasonica</h3><p>Modellamento corpo</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Riduzione cellulite e adiposità</li>
+            <li>Trattamento addome, cosce e glutei</li>
+            <li>Combinabile con radiofrequenza per potenziare</li>
+            <li>Drenaggio linfatico post-trattamento</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Ciclo 6-8 sedute</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-purple">🌈</div>
+          <div><h3>Luce Pulsata IPL</h3><p>Foto-ringiovanimento</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Macchie solari e iperpigmentazioni</li>
+            <li>Couperose e capillari dilatati</li>
+            <li>Foto-ringiovanimento cutaneo</li>
+            <li>Uniformizzazione del tono del viso</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Pelle uniforme</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-gold">💡</div>
+          <div><h3>LED Therapy</h3><p>Trattamento luminoso multifunzione</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>LED rosso: anti-age e stimolazione collagene</li>
+            <li>LED blu: acne e trattamento antibatterico</li>
+            <li>LED giallo: calmante e anti-rossore</li>
+            <li>Ideale in abbinamento ad altri trattamenti</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Indolore e rilassante</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESTETICA -->
+  <div class="tab-panel" id="tab-estetica">
+    <div class="services-grid">
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-gold">🌿</div>
+          <div><h3>Trattamenti Viso</h3><p>Pulizia, idratazione, anti-age</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Pulizia profonda del viso con estrattore</li>
+            <li>Idratazione intensa e trattamento nutriente</li>
+            <li>Anti-age con principi attivi concentrati</li>
+            <li>Trattamento acne e pelle mista-grassa</li>
+            <li>Microdermabrasione e ossigenoterapia</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Personalizzato</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-purple">🖊️</div>
+          <div><h3>Trucco Semipermanente</h3><p>PMU — Permanent Make Up</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Microblading: sopracciglia hair stroke</li>
+            <li>Powder Brow / Ombre Brow</li>
+            <li>Blush Lips: labbra colorate e definite</li>
+            <li>Eye liner semipermanente</li>
+            <li>Retouching e correzioni</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Dura 1-2 anni</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-gold">👁️</div>
+          <div><h3>Ciglia &amp; Sopracciglia</h3><p>Extension, laminazione, henna</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Extension ciglia: classic, volume, mega volume</li>
+            <li>Lash Lift e Lash Filler</li>
+            <li>Laminazione sopracciglia</li>
+            <li>Henna sopracciglia e design</li>
+            <li>Tinte e mapping professionale</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Sguardo intenso</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-purple">💅</div>
+          <div><h3>Nail Care</h3><p>Manicure, pedicure, ricostruzione</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Manicure e pedicure classiche</li>
+            <li>Smalto semipermanente gel</li>
+            <li>Ricostruzione unghie in gel e acrilico</li>
+            <li>Nail art e decorazioni su misura</li>
+            <li>Pedicure estetica e curativa</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Mani perfette</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-gold">🕯️</div>
+          <div><h3>Epilazione</h3><p>Ceretta italiana e orientale</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Ceretta italiana tradizionale</li>
+            <li>Ceretta orientale liposolubile (meno dolorosa)</li>
+            <li>Epilazione full body</li>
+            <li>Viso, ascelle, gambe, inguine, schiena</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Pelle setosa</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CORPO -->
+  <div class="tab-panel" id="tab-corpo">
+    <div class="services-grid">
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-gold">🌸</div>
+          <div><h3>Massaggi Terapeutici</h3><p>Relax, decontratturazione, drenaggio</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Massaggio rilassante e decontratturante</li>
+            <li>Drenaggio linfatico manuale (Vodder)</li>
+            <li>Hot Stone Massage</li>
+            <li>Massaggio anticellulite</li>
+            <li>Massaggio ayurvedico</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Puro benessere</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-purple">🫧</div>
+          <div><h3>Trattamenti Corpo</h3><p>Scrub, fanghi, bendaggi</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Scrub esfoliante corpo con oli essenziali</li>
+            <li>Fanghi termali e mineralizzanti</li>
+            <li>Bendaggi snellenti e drenanti</li>
+            <li>Wrap cioccolato e anti-age</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Corpo levigato</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-gold">☀️</div>
+          <div><h3>Abbronzatura Spray</h3><p>Bronze naturale tutto l'anno</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Autoabbronzante professionale airbrush</li>
+            <li>Tonalità personalizzabili</li>
+            <li>Effetto immediato e naturale</li>
+            <li>Formula idratante e nutriente</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Senza UV</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-header">
+          <div class="service-icon icon-purple">🍃</div>
+          <div><h3>Percorsi Personalizzati</h3><p>Protocolli su misura</p></div>
+        </div>
+        <div class="service-card-body">
+          <ul>
+            <li>Consulenza e analisi cutanea approfondita</li>
+            <li>Combinazione di trattamenti per obiettivi specifici</li>
+            <li>Protocolli corpo prima di eventi</li>
+            <li>Programmi stagionali di mantenimento</li>
+          </ul>
+        </div>
+        <div class="service-card-footer">
+          <span class="expand-btn">Scopri <span class="expand-arrow">›</span></span>
+          <span style="font-size:0.78rem;color:var(--gray)">Solo per te</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECNOLOGIE -->
+<section id="tecnologie">
+  <div class="fade-in">
+    <p class="section-tag">✦ Apparecchiature</p>
+    <h2 class="section-title">Tecnologie di <span>ultima generazione</span></h2>
+    <div class="section-line"></div>
+    <p class="section-desc">Investiamo costantemente nelle migliori tecnologie certificate, per offrire trattamenti sicuri, efficaci e all'avanguardia.</p>
+  </div>
+  <div class="tech-grid">
+    <div class="tech-card fade-in">
+      <span class="tech-icon">⚡</span>
+      <h3>Laser Diodo 808nm</h3>
+      <p>Depilazione permanente efficace su tutti i fototipi, anche scuri. Trattamento rapido e indolore.</p>
+      <span class="tech-badge">Depilazione Laser</span>
+    </div>
+    <div class="tech-card fade-in">
+      <span class="tech-icon">🔆</span>
+      <h3>HIFU 7D</h3>
+      <p>Ultrasuoni focalizzati ad alta intensità per il lifting viso e corpo più efficace sul mercato.</p>
+      <span class="tech-badge">Lifting Non Invasivo</span>
+    </div>
+    <div class="tech-card fade-in">
+      <span class="tech-icon">〰️</span>
+      <h3>Radiofrequenza Multipolare</h3>
+      <p>Tecnologia a più poli per un riscaldamento uniforme e profondo. Rassodamento garantito.</p>
+      <span class="tech-badge">Rassodamento</span>
+    </div>
+    <div class="tech-card fade-in">
+      <span class="tech-icon">❄️</span>
+      <h3>Criolipolisi Doppia</h3>
+      <p>Doppio applicatore per trattare due zone simultaneamente. Fino al 27% di riduzione del grasso.</p>
+      <span class="tech-badge">Corpo</span>
+    </div>
+    <div class="tech-card fade-in">
+      <span class="tech-icon">🌊</span>
+      <h3>Cavitazione 40KHz</h3>
+      <p>Ultrasuoni focalizzati per la distruzione delle cellule adipose. Ideale per cellulite e localizzazioni.</p>
+      <span class="tech-badge">Anti-Cellulite</span>
+    </div>
+    <div class="tech-card fade-in">
+      <span class="tech-icon">🌈</span>
+      <h3>IPL Luce Pulsata</h3>
+      <p>Trattamento macchie, couperose e foto-ringiovanimento. Pelle uniforme e luminosa.</p>
+      <span class="tech-badge">Foto-Ringiovanimento</span>
+    </div>
+    <div class="tech-card fade-in">
+      <span class="tech-icon">💡</span>
+      <h3>LED Terapia Multipla</h3>
+      <p>Pannello LED multifunzione con lunghezze d'onda specifiche per ogni esigenza cutanea.</p>
+      <span class="tech-badge">Fototerapia</span>
+    </div>
+    <div class="tech-card fade-in">
+      <span class="tech-icon">🔬</span>
+      <h3>Microneedling RF</h3>
+      <p>Combinazione di microaghi e radiofrequenza per rinnovamento cutaneo profondo e sicuro.</p>
+      <span class="tech-badge">Ringiovanimento</span>
+    </div>
+  </div>
+</section>
+
+<!-- METODO -->
+<section id="metodo">
+  <div class="fade-in" style="text-align:center;max-width:600px;margin:0 auto;">
+    <p class="section-tag">✦ Il Nostro Metodo</p>
+    <h2 class="section-title">Un percorso <span>pensato per te</span></h2>
+    <div class="section-line" style="margin:0 auto 24px;"></div>
+    <p class="section-desc" style="margin:0 auto;">Ogni cliente è unica. Per questo abbiamo sviluppato un approccio in 4 fasi che garantisce risultati personalizzati e duraturi.</p>
+  </div>
+  <div class="metodo-grid fade-in" style="margin-top:50px;">
+    <div class="step">
+      <span class="step-num">01</span>
+      <h3>Consulenza</h3>
+      <p>Analizziamo la tua pelle, il tuo stile di vita e i tuoi obiettivi. La consulenza è sempre gratuita e senza impegno.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">02</span>
+      <h3>Diagnosi</h3>
+      <p>Utilizziamo strumenti diagnostici professionali per valutare lo stato della tua pelle e identificare il trattamento più adatto.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">03</span>
+      <h3>Trattamento</h3>
+      <p>Eseguiamo il protocollo personalizzato con le tecnologie più avanzate, nel massimo comfort e sicurezza.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">04</span>
+      <h3>Follow-up</h3>
+      <p>Ti seguiamo nel tempo con controlli periodici e consigli per mantenere e amplificare i risultati ottenuti.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RISULTATI -->
+<section id="risultati">
+  <div class="fade-in">
+    <p class="section-tag" style="color:var(--gold)">✦ Trasformazioni</p>
+    <h2 class="section-title">I nostri <span>risultati</span></h2>
+    <div class="section-line"></div>
+    <p class="section-desc">Ogni risultato racconta una storia. Le nostre clienti ci affidano la loro bellezza e noi la valorizziamo con cura e competenza.</p>
+  </div>
+  <div class="ba-container">
+    <div class="ba-tabs">
+      <div class="ba-tab active">Tutti</div>
+      <div class="ba-tab">Viso</div>
+      <div class="ba-tab">Corpo</div>
+      <div class="ba-tab">Labbra</div>
+      <div class="ba-tab">Laser</div>
+    </div>
+    <div class="ba-grid fade-in">
+      <div class="ba-card">
+        <div class="ba-card-inner">
+          <div class="ba-icon">✨</div>
+          <p>Galleria risultati<br><small>Le foto verranno inserite previa autorizzazione delle clienti</small></p>
+        </div>
+        <div class="ba-label">Prima &amp; Dopo</div>
+        <div class="ba-treatment"><h4>Filler Labbra</h4><p>Acido ialuronico — 1 seduta</p></div>
+      </div>
+      <div class="ba-card">
+        <div class="ba-card-inner">
+          <div class="ba-icon">💆</div>
+          <p>Galleria risultati<br><small>Le foto verranno inserite previa autorizzazione delle clienti</small></p>
+        </div>
+        <div class="ba-label">Prima &amp; Dopo</div>
+        <div class="ba-treatment"><h4>Botox Frontale</h4><p>Tossina botulinica — effetto naturale</p></div>
+      </div>
+      <div class="ba-card">
+        <div class="ba-card-inner">
+          <div class="ba-icon">🌟</div>
+          <p>Galleria risultati<br><small>Le foto verranno inserite previa autorizzazione delle clienti</small></p>
+        </div>
+        <div class="ba-label">Prima &amp; Dopo</div>
+        <div class="ba-treatment"><h4>Criolipolisi Addome</h4><p>4 settimane di risultati</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIANZE -->
+<section id="testimonianze">
+  <div class="reviews-header fade-in">
+    <div>
+      <p class="section-tag">✦ Recensioni</p>
+      <h2 class="section-title">Cosa dicono<br>le nostre <span>clienti</span></h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="rating-summary">
+      <div class="big-rating">4.9</div>
+      <div class="stars-row">★★★★★</div>
+      <div class="rating-label">Basato su 200+ recensioni verificate</div>
+    </div>
+  </div>
+  <div class="reviews-slider">
+    <div class="review-card fade-in">
+      <div class="review-quote">"</div>
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">Ho fatto il filler alle labbra e il risultato è naturale e bellissimo. La dottoressa mi ha ascoltata, capito cosa volevo e ha rispettato i miei desideri senza esagerare. Finalmente un centro dove si lavora con etica!</p>
+      <div class="review-author">
+        <div class="author-avatar">S</div>
+        <div class="author-info"><h4>Sara M.</h4><span>Filler Labbra · Milano</span></div>
+      </div>
+    </div>
+    <div class="review-card fade-in">
+      <div class="review-quote">"</div>
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">Ho provato la criolipolisi sull'addome dopo anni di tentativi con diete e palestra. In 6 settimane la differenza è impressionante. Staff professionale e ambiente elegante. Lo consiglio a tutte!</p>
+      <div class="review-author">
+        <div class="author-avatar">F</div>
+        <div class="author-info"><h4>Federica L.</h4><span>Criolipolisi · Roma</span></div>
+      </div>
+    </div>
+    <div class="review-card fade-in">
+      <div class="review-quote">"</div>
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">Il microblading che mi hanno fatto è perfetto. Le sopracciglia sembrano vere, disegnate da un'artista. L'estetista è stata precisa, paziente e mi ha guidata nella scelta della forma più adatta al mio viso.</p>
+      <div class="review-author">
+        <div class="author-avatar">C</div>
+        <div class="author-info"><h4>Chiara R.</h4><span>Microblading · Firenze</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="fade-in" style="text-align:center;max-width:600px;margin:0 auto 50px;">
+    <p class="section-tag">✦ Domande Frequenti</p>
+    <h2 class="section-title">Hai delle <span>domande</span>?</h2>
+    <div class="section-line" style="margin:0 auto;"></div>
+  </div>
+  <div class="faq-grid">
+    <div class="faq-item fade-in">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>Il botox fa male? Il viso resterà "bloccato"?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>Il trattamento è quasi indolore (si usa ago sottilissimo) e, se eseguito da un medico esperto con le dosi corrette, il risultato è assolutamente naturale. Non si "blocca" il viso, si riduce selettivamente il movimento delle rughe senza compromettere l'espressività.</p></div>
+    </div>
+    <div class="faq-item fade-in">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>Quanto dura il filler con acido ialuronico?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>Dipende dall'area trattata e dal prodotto utilizzato. In media il filler alle labbra dura 6-12 mesi, quello agli zigomi 12-18 mesi. L'acido ialuronico è riassorbibile, quindi il trattamento è reversibile.</p></div>
+    </div>
+    <div class="faq-item fade-in">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>La depilazione laser funziona su peli chiari o scuri?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>Il nostro laser diodo 808nm è efficace su un ampio range di fototipi e peli. I peli scuri rispondono meglio al trattamento. Per i peli molto chiari o biondi, possiamo valutare in consulenza la soluzione più adatta.</p></div>
+    </div>
+    <div class="faq-item fade-in">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>Quante sedute servono per la criolipolisi?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>Nella maggior parte dei casi, una singola seduta per zona è sufficiente per ottenere una riduzione visibile fino al 27% del grasso. Per risultati ottimali su più zone o in caso di accumuli maggiori, possiamo pianificare un ciclo personalizzato.</p></div>
+    </div>
+    <div class="faq-item fade-in">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>Il microblading fa male? Quanto dura?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>Applichiamo una crema anestetica prima del trattamento per minimizzare il fastidio. Il microblading dura in media 1-2 anni a seconda del tipo di pelle. È previsto un ritocco dopo 4-6 settimane incluso nel prezzo.</p></div>
+    </div>
+    <div class="faq-item fade-in">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>È necessaria la consulenza prima del trattamento?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>Sì, per i trattamenti medico-estetici la consulenza preliminare è obbligatoria e gratuita. È il momento in cui valutiamo insieme le tue esigenze, analizziamo la tua pelle e definiamo il percorso più adatto a te.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="fade-in" style="text-align:center;max-width:600px;margin:0 auto 50px;">
+    <p class="section-tag">✦ Il Nostro Team</p>
+    <h2 class="section-title">Professioniste<br>al tuo <span>servizio</span></h2>
+    <div class="section-line" style="margin:0 auto;"></div>
+    <p class="section-desc" style="margin:0 auto;">Medici, estetiste e specialisti formati con i migliori standard internazionali, appassionati di bellezza e costantemente aggiornati.</p>
+  </div>
+  <div class="team-grid">
+    <div class="team-card fade-in">
+      <div class="team-photo"><span>👩‍⚕️</span></div>
+      <h3>Dott.ssa Diana R.</h3>
+      <div class="role">Medico Estetico — Direttrice</div>
+      <p>Specializzata in medicina estetica con oltre 10 anni di esperienza. Master in tecniche iniettive e ringiovanimento non invasivo.</p>
+      <div class="team-specialties">
+        <span class="specialty-tag">Filler</span>
+        <span class="specialty-tag">Botox</span>
+        <span class="specialty-tag">Fili PDO</span>
+        <span class="specialty-tag">PRP</span>
+      </div>
+    </div>
+    <div class="team-card fade-in">
+      <div class="team-photo"><span>👩‍🎨</span></div>
+      <h3>Valentina B.</h3>
+      <div class="role">Estetista Senior — PMU Artist</div>
+      <p>Esperta in trucco semipermanente, extension ciglia e trattamenti viso. Certificata dalle principali scuole europee di estetica avanzata.</p>
+      <div class="team-specialties">
+        <span class="specialty-tag">Microblading</span>
+        <span class="specialty-tag">Lash Lift</span>
+        <span class="specialty-tag">PMU</span>
+        <span class="specialty-tag">Viso</span>
+      </div>
+    </div>
+    <div class="team-card fade-in">
+      <div class="team-photo"><span>👩‍💼</span></div>
+      <h3>Alessia M.</h3>
+      <div class="role">Body Specialist</div>
+      <p>Specializzata in trattamenti corpo, massaggi terapeutici e tecnologie avanzate (criolipolisi, HIFU, radiofrequenza). Terapista certificata.</p>
+      <div class="team-specialties">
+        <span class="specialty-tag">Criolipolisi</span>
+        <span class="specialty-tag">HIFU</span>
+        <span class="specialty-tag">Massaggi</span>
+        <span class="specialty-tag">RF</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRENOTA -->
+<section id="prenota">
+  <div class="fade-in">
+    <p class="section-tag" style="color:var(--gold-light)">✦ Contatti &amp; Prenotazioni</p>
+    <h2 class="section-title">Inizia il tuo <span style="color:var(--gold-light)">percorso</span></h2>
+    <div class="section-line"></div>
+    <p class="section-desc">Prenota la tua consulenza gratuita. Siamo qui per ascoltarti e guidarti verso la versione migliore di te.</p>
+  </div>
+  <div class="booking-grid">
+    <div class="booking-info fade-in">
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <h4>Dove Siamo</h4>
+          <p>Via della Bellezza, 12<br>Milano, Italia</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div>
+          <h4>Telefono &amp; WhatsApp</h4>
+          <a href="tel:+39000000000">+39 000 000 0000</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <h4>Email</h4>
+          <a href="mailto:info@progettodiana.it">info@progettodiana.it</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🕐</div>
+        <div>
+          <h4>Orari</h4>
+          <p>Lun–Ven: 9:00 – 20:00<br>Sabato: 9:00 – 18:00<br>Domenica: chiuso</p>
+        </div>
+      </div>
+      <div>
+        <h4 style="color:rgba(255,255,255,0.4);font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;">Seguici</h4>
+        <div class="social-links">
+          <a class="social-link" href="#" aria-label="Instagram">📸</a>
+          <a class="social-link" href="#" aria-label="Facebook">📘</a>
+          <a class="social-link" href="#" aria-label="TikTok">🎵</a>
+          <a class="social-link" href="#" aria-label="WhatsApp">💬</a>
+        </div>
+      </div>
+    </div>
+    <div class="booking-form fade-in">
+      <form id="contactForm" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome *</label>
+            <input type="text" placeholder="Il tuo nome" required>
+          </div>
+          <div class="form-group">
+            <label>Cognome *</label>
+            <input type="text" placeholder="Il tuo cognome" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Telefono *</label>
+            <input type="tel" placeholder="+39 000 000 0000" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="tu@email.it">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Trattamento di interesse *</label>
+          <select required>
+            <option value="">Seleziona un trattamento</option>
+            <optgroup label="Medicina Estetica">
+              <option>Tossina Botulinica (Botox)</option>
+              <option>Filler Acido Ialuronico</option>
+              <option>Biorivitalizzazione / Skinbooster</option>
+              <option>Fili Tensori PDO</option>
+              <option>PRP Plasma</option>
+              <option>Mesoterapia</option>
+              <option>Peeling Chimici</option>
+              <option>Carbossiterapia</option>
+            </optgroup>
+            <optgroup label="Laser &amp; Tecnologie">
+              <option>Depilazione Laser</option>
+              <option>HIFU Lifting</option>
+              <option>Radiofrequenza</option>
+              <option>Criolipolisi</option>
+              <option>Cavitazione</option>
+              <option>IPL / Foto-ringiovanimento</option>
+            </optgroup>
+            <optgroup label="Centro Estetico">
+              <option>Trattamento Viso</option>
+              <option>Microblading / PMU</option>
+              <option>Extension / Laminazione Ciglia</option>
+              <option>Nail Care</option>
+              <option>Epilazione Ceretta</option>
+            </optgroup>
+            <optgroup label="Corpo &amp; Benessere">
+              <option>Massaggio</option>
+              <option>Trattamento Corpo</option>
+              <option>Consulenza Percorso</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Messaggio</label>
+          <textarea placeholder="Descrivi la tua esigenza o poni una domanda..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">Prenota Consulenza Gratuita →</button>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <div class="success-icon">✨</div>
+        <h3>Richiesta inviata!</h3>
+        <p>Ti contatteremo entro 24 ore per confermare il tuo appuntamento. Non vediamo l'ora di conoscerti!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo">
+        <img src="logo.jpg" alt="Progetto Diana" style="height:50px;filter:brightness(0.85);">
+        <div class="nav-logo-text">
+          <span>Progetto Diana</span>
+          <span style="color:rgba(255,255,255,0.3)">Medicina Estetica</span>
+        </div>
+      </div>
+      <p>Il tuo centro di riferimento per la medicina estetica e la bellezza. Risultati naturali, tecnologie avanzate, cura totale.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Servizi</h4>
+      <ul>
+        <li><a href="#servizi">Medicina Estetica</a></li>
+        <li><a href="#servizi">Laser &amp; Tecnologie</a></li>
+        <li><a href="#servizi">Centro Estetico</a></li>
+        <li><a href="#servizi">Corpo &amp; Benessere</a></li>
+        <li><a href="#tecnologie">Le Nostre Tecnologie</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Trattamenti</h4>
+      <ul>
+        <li><a href="#servizi">Botox &amp; Filler</a></li>
+        <li><a href="#servizi">Depilazione Laser</a></li>
+        <li><a href="#servizi">HIFU Lifting</a></li>
+        <li><a href="#servizi">Criolipolisi</a></li>
+        <li><a href="#servizi">Microblading</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Info</h4>
+      <ul>
+        <li><a href="#about">Chi Siamo</a></li>
+        <li><a href="#team">Il Team</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#prenota">Contatti</a></li>
+        <li><a href="#prenota">Prenota Online</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Progetto Diana — Medicina Estetica. Tutti i diritti riservati.</p>
+    <div class="footer-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Cookie Policy</a>
+      <a href="#">Note Legali</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // LOADER
+  window.addEventListener('load', () => {
+    setTimeout(() => document.getElementById('loader').classList.add('hidden'), 800);
+  });
+
+  // NAV SCROLL
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // HAMBURGER MENU
+  function toggleMenu() {
+    const h = document.getElementById('hamburger');
+    const m = document.getElementById('mobileMenu');
+    h.classList.toggle('open');
+    m.classList.toggle('open');
+    document.body.style.overflow = m.classList.contains('open') ? 'hidden' : '';
+  }
+  function closeMobile() {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // SERVICE TABS
+  function switchTab(e, id) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    e.target.classList.add('active');
+    document.getElementById('tab-' + id).classList.add('active');
+  }
+
+  // SERVICE CARD EXPAND
+  function toggleCard(card) {
+    const wasOpen = card.classList.contains('expanded');
+    document.querySelectorAll('.service-card.expanded').forEach(c => c.classList.remove('expanded'));
+    if (!wasOpen) card.classList.add('expanded');
+  }
+
+  // FAQ ACCORDION
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // BEFORE/AFTER TABS
+  document.querySelectorAll('.ba-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.ba-tab').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // COUNTER ANIMATION
+  function animateCounter(el) {
+    const target = +el.dataset.count;
+    const suffix = target === 98 ? '%' : target === 2500 ? '+' : '+';
+    const duration = 1800;
+    const step = target / (duration / 16);
+    let current = 0;
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = Math.floor(current).toLocaleString('it-IT') + suffix;
+      if (current >= target) clearInterval(timer);
+    }, 16);
+  }
+
+  // INTERSECTION OBSERVER
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // counters
+        const counter = entry.target.querySelector('[data-count]');
+        if (counter && !counter.dataset.started) {
+          counter.dataset.started = '1';
+          animateCounter(counter);
+        }
+        // also trigger counters directly
+        if (entry.target.dataset.count) {
+          if (!entry.target.dataset.started) {
+            entry.target.dataset.started = '1';
+            animateCounter(entry.target);
+          }
+        }
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  document.querySelectorAll('[data-count]').forEach(el => observer.observe(el));
+
+  // STAT ITEMS observer
+  document.querySelectorAll('.stat-item').forEach(item => {
+    const counter = item.querySelector('[data-count]');
+    if (!counter) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !counter.dataset.started) {
+          counter.dataset.started = '1';
+          animateCounter(counter);
+        }
+      });
+    }, { threshold: 0.5 });
+    io.observe(item);
+  });
+
+  // FORM SUBMIT
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.getElementById('contactForm').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  }
+
+  // VIDEO FALLBACK
+  const video = document.getElementById('hero-video');
+  video.addEventListener('error', () => {
+    document.getElementById('hero').style.background = 'linear-gradient(160deg, #1C1C1C 0%, #2d1f3d 50%, #1C1C1C 100%)';
+  });
+</script>
+</body>
+</html>
