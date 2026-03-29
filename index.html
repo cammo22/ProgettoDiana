@@ -34,7 +34,7 @@
       z-index: 9999; transition: opacity 0.6s ease, visibility 0.6s ease;
     }
     #loader.hidden { opacity: 0; visibility: hidden; }
-    .loader-logo { width: 120px; animation: pulse 1.5s ease-in-out infinite; }
+    .loader-logo { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; animation: pulse 1.5s ease-in-out infinite; }
     @keyframes pulse { 0%,100%{opacity:0.4;transform:scale(0.95)} 50%{opacity:1;transform:scale(1.05)} }
 
     /* NAV */
@@ -48,7 +48,7 @@
       padding: 12px 5%; box-shadow: 0 2px 30px rgba(0,0,0,0.08);
     }
     .nav-logo { display: flex; align-items: center; gap: 12px; }
-    .nav-logo img { height: 50px; width: auto; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15)); }
+    .nav-logo img { height: 50px; width: 50px; border-radius: 50%; object-fit: cover; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15)); }
     .nav-logo-text { display: flex; flex-direction: column; }
     .nav-logo-text span:first-child { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
     .nav-logo-text span:last-child { font-size: 0.65rem; color: var(--purple); letter-spacing: 3px; text-transform: uppercase; }
@@ -80,7 +80,9 @@
     /* HERO */
     #hero {
       position: relative; height: 100vh; min-height: 600px;
-      display: flex; align-items: center; justify-content: center; overflow: hidden;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: flex-start; overflow: hidden;
+      padding-top: 160px;
     }
     #hero-video {
       position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;
@@ -106,10 +108,16 @@
     .hero-title em { color: var(--gold-light); font-style: italic; }
     .hero-sub {
       font-size: clamp(1rem, 2vw, 1.2rem); color: rgba(255,255,255,0.8);
-      font-weight: 300; letter-spacing: 1px; margin-bottom: 40px;
+      font-weight: 300; letter-spacing: 1px; margin-bottom: 0;
       animation: fadeUp 0.8s ease both 0.7s;
     }
-    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; animation: fadeUp 0.8s ease both 0.9s; }
+    .hero-btns {
+      position: absolute; bottom: 60px; left: 0; right: 0; z-index: 2;
+      display: flex; flex-direction: column; align-items: center; gap: 16px;
+      animation: fadeUp 0.8s ease both 0.9s;
+    }
+    .hero-btns .hero-sub { margin-bottom: 0; animation: none; }
+    .hero-btns-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
     .btn-primary {
       background: linear-gradient(135deg, var(--gold), var(--gold-dark));
       color: var(--white); padding: 14px 36px; border-radius: 50px;
@@ -137,6 +145,18 @@
     @keyframes scrollAnim { 0%{opacity:1;transform:scaleY(1) translateY(0)} 100%{opacity:0;transform:scaleY(0.5) translateY(20px)} }
     @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
 
+    /* IMAGE STYLES */
+    .service-card-img { width: 100%; height: 150px; overflow: hidden; }
+    .service-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+    .service-card:hover .service-card-img img { transform: scale(1.05); }
+    .tech-card-img { width: 100%; height: 120px; border-radius: 10px; overflow: hidden; margin-bottom: 14px; }
+    .tech-card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .tech-icon { display: none; }
+    .step-img { width: 80px; height: 80px; border-radius: 50%; overflow: hidden; margin: 0 auto 12px; }
+    .step-img img { width: 100%; height: 100%; object-fit: cover; }
+    .team-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .ba-card > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+
     /* SECTIONS */
     section { padding: 100px 5%; scroll-margin-top: 70px; }
     .section-tag {
@@ -162,7 +182,12 @@
       content: ''; position: absolute; inset: -2px; z-index: -1; border-radius: 22px;
       background: linear-gradient(135deg, var(--gold), var(--purple));
     }
-    .about-img-wrap img { width: 100%; display: block; border-radius: 18px; }
+    .about-media { position: relative; aspect-ratio: 1; border-radius: 18px; overflow: hidden; }
+    .about-media img, .about-media video {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+      transition: opacity 1s ease;
+    }
+    .about-media video { opacity: 0; }
     .about-badges {
       position: absolute; bottom: 24px; left: 24px; right: 24px;
       display: flex; gap: 12px; flex-wrap: wrap;
@@ -540,8 +565,10 @@
   <div class="hero-content">
     <div class="hero-tag">✦ Medicina Estetica · Centro Benessere ✦</div>
     <h1 class="hero-title">La tua <em>bellezza</em><br>è il nostro progetto</h1>
+  </div>
+  <div class="hero-btns">
     <p class="hero-sub">Trattamenti su misura, tecnologie all'avanguardia,<br>risultati naturali che durano nel tempo.</p>
-    <div class="hero-btns">
+    <div class="hero-btns-row">
       <a href="#prenota" class="btn-primary">Prenota Consulenza</a>
       <a href="#servizi" class="btn-outline">Scopri i Servizi</a>
     </div>
@@ -556,7 +583,10 @@
 <section id="about">
   <div class="about-grid">
     <div class="about-img-wrap fade-in">
-      <img src="logo.jpg" alt="Progetto Diana — Il nostro studio" style="aspect-ratio:1;object-fit:cover;">
+      <div class="about-media">
+        <img id="about-img" src="immagini/01_about_studio.png" alt="Progetto Diana — Il nostro studio">
+        <video id="about-video" src="logo-loop.mp4" muted playsinline></video>
+      </div>
       <div class="about-badges">
         <div class="badge"><div class="dot dot-gold"></div> Medici Certificati</div>
         <div class="badge"><div class="dot dot-purple"></div> Tecnologie Avanzate</div>
@@ -596,7 +626,7 @@
 <div id="stats">
   <div class="stats-grid">
     <div class="stat-item fade-in">
-      <div class="stat-num" data-count="2500">0</div>
+      <div class="stat-num" data-count="0">0</div>
       <div class="stat-label">Clienti Soddisfatte</div>
     </div>
     <div class="stat-item fade-in">
@@ -604,7 +634,7 @@
       <div class="stat-label">Trattamenti Disponibili</div>
     </div>
     <div class="stat-item fade-in">
-      <div class="stat-num" data-count="98">0</div>
+      <div class="stat-num" data-count="0">0</div>
       <div class="stat-label">% Soddisfazione</div>
     </div>
     <div class="stat-item fade-in">
@@ -633,6 +663,7 @@
   <div class="tab-panel active" id="tab-medicina">
     <div class="services-grid">
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/08_tossina_botulinica.png" alt="Tossina Botulinica"></div>
         <div class="service-card-header">
           <div class="service-icon icon-gold">💉</div>
           <div><h3>Tossina Botulinica</h3><p>Trattamento rughe e lifting</p></div>
@@ -652,6 +683,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/09_filler_acido_ialuronico.png" alt="Filler Acido Ialuronico"></div>
         <div class="service-card-header">
           <div class="service-icon icon-purple">💧</div>
           <div><h3>Filler Acido Ialuronico</h3><p>Volume, definizione e riempimento</p></div>
@@ -671,6 +703,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/10_biorivitalizzazione.png" alt="Biorivitalizzazione"></div>
         <div class="service-card-header">
           <div class="service-icon icon-gold">✨</div>
           <div><h3>Biorivitalizzazione</h3><p>Idratazione profonda e skinbooster</p></div>
@@ -689,6 +722,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/11_prp_plasma.png" alt="PRP Plasma"></div>
         <div class="service-card-header">
           <div class="service-icon icon-purple">🧬</div>
           <div><h3>PRP — Plasma Ricco di Piastrine</h3><p>Ringiovanimento biologico</p></div>
@@ -707,6 +741,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/12_fili_tensori_pdo.png" alt="Fili Tensori PDO"></div>
         <div class="service-card-header">
           <div class="service-icon icon-gold">🧵</div>
           <div><h3>Fili Tensori PDO</h3><p>Lifting non chirurgico</p></div>
@@ -725,6 +760,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/13_mesoterapia.png" alt="Mesoterapia"></div>
         <div class="service-card-header">
           <div class="service-icon icon-purple">🔬</div>
           <div><h3>Mesoterapia</h3><p>Cocktail attivi mirati</p></div>
@@ -743,6 +779,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/14_peeling_chimici.png" alt="Peeling Chimici"></div>
         <div class="service-card-header">
           <div class="service-icon icon-gold">🧪</div>
           <div><h3>Peeling Chimici</h3><p>Rinnovamento cellulare</p></div>
@@ -761,6 +798,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/15_carbossiterapia.png" alt="Carbossiterapia"></div>
         <div class="service-card-header">
           <div class="service-icon icon-purple">💨</div>
           <div><h3>Carbossiterapia</h3><p>CO₂ terapeutica</p></div>
@@ -785,6 +823,7 @@
   <div class="tab-panel" id="tab-laser">
     <div class="services-grid">
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/16_laser_diodo.png" alt="Laser Diodo"></div>
         <div class="service-card-header">
           <div class="service-icon icon-gold">⚡</div>
           <div><h3>Laser Diodo 808nm</h3><p>Depilazione permanente</p></div>
@@ -803,6 +842,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/17_hifu.png" alt="HIFU"></div>
         <div class="service-card-header">
           <div class="service-icon icon-purple">🔆</div>
           <div><h3>HIFU — Ultrasuoni Focalizzati</h3><p>Lifting non invasivo</p></div>
@@ -821,6 +861,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/18_radiofrequenza.png" alt="Radiofrequenza"></div>
         <div class="service-card-header">
           <div class="service-icon icon-gold">〰️</div>
           <div><h3>Radiofrequenza Multipolare</h3><p>Rassodamento e rimodellamento</p></div>
@@ -839,6 +880,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/19_criolipolisi.png" alt="Criolipolisi"></div>
         <div class="service-card-header">
           <div class="service-icon icon-purple">❄️</div>
           <div><h3>Criolipolisi</h3><p>Eliminazione adiposità localizzate</p></div>
@@ -857,6 +899,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/20_cavitazione.png" alt="Cavitazione"></div>
         <div class="service-card-header">
           <div class="service-icon icon-gold">🌊</div>
           <div><h3>Cavitazione Ultrasonica</h3><p>Modellamento corpo</p></div>
@@ -875,6 +918,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/21_ipl_luce_pulsata.png" alt="IPL Luce Pulsata"></div>
         <div class="service-card-header">
           <div class="service-icon icon-purple">🌈</div>
           <div><h3>Luce Pulsata IPL</h3><p>Foto-ringiovanimento</p></div>
@@ -893,6 +937,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/22_led_therapy.png" alt="LED Therapy"></div>
         <div class="service-card-header">
           <div class="service-icon icon-gold">💡</div>
           <div><h3>LED Therapy</h3><p>Trattamento luminoso multifunzione</p></div>
@@ -917,6 +962,7 @@
   <div class="tab-panel" id="tab-estetica">
     <div class="services-grid">
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/23_trattamenti_viso.png" alt="Trattamenti Viso"></div>
         <div class="service-card-header">
           <div class="service-icon icon-gold">🌿</div>
           <div><h3>Trattamenti Viso</h3><p>Pulizia, idratazione, anti-age</p></div>
@@ -936,6 +982,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/24_trucco_semipermanente.png" alt="Trucco Semipermanente"></div>
         <div class="service-card-header">
           <div class="service-icon icon-purple">🖊️</div>
           <div><h3>Trucco Semipermanente</h3><p>PMU — Permanent Make Up</p></div>
@@ -955,6 +1002,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/25_ciglia_sopracciglia.png" alt="Ciglia e Sopracciglia"></div>
         <div class="service-card-header">
           <div class="service-icon icon-gold">👁️</div>
           <div><h3>Ciglia &amp; Sopracciglia</h3><p>Extension, laminazione, henna</p></div>
@@ -974,6 +1022,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/26_nail_care.png" alt="Nail Care"></div>
         <div class="service-card-header">
           <div class="service-icon icon-purple">💅</div>
           <div><h3>Nail Care</h3><p>Manicure, pedicure, ricostruzione</p></div>
@@ -993,6 +1042,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/27_epilazione.png" alt="Epilazione"></div>
         <div class="service-card-header">
           <div class="service-icon icon-gold">🕯️</div>
           <div><h3>Epilazione</h3><p>Ceretta italiana e orientale</p></div>
@@ -1017,6 +1067,7 @@
   <div class="tab-panel" id="tab-corpo">
     <div class="services-grid">
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/28_massaggi_terapeutici.png" alt="Massaggi Terapeutici"></div>
         <div class="service-card-header">
           <div class="service-icon icon-gold">🌸</div>
           <div><h3>Massaggi Terapeutici</h3><p>Relax, decontratturazione, drenaggio</p></div>
@@ -1036,6 +1087,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/29_trattamenti_corpo.png" alt="Trattamenti Corpo"></div>
         <div class="service-card-header">
           <div class="service-icon icon-purple">🫧</div>
           <div><h3>Trattamenti Corpo</h3><p>Scrub, fanghi, bendaggi</p></div>
@@ -1054,6 +1106,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/30_abbronzatura_spray.png" alt="Abbronzatura Spray"></div>
         <div class="service-card-header">
           <div class="service-icon icon-gold">☀️</div>
           <div><h3>Abbronzatura Spray</h3><p>Bronze naturale tutto l'anno</p></div>
@@ -1072,6 +1125,7 @@
         </div>
       </div>
       <div class="service-card" onclick="toggleCard(this)">
+        <div class="service-card-img"><img src="immagini/31_percorsi_personalizzati.png" alt="Percorsi Personalizzati"></div>
         <div class="service-card-header">
           <div class="service-icon icon-purple">🍃</div>
           <div><h3>Percorsi Personalizzati</h3><p>Protocolli su misura</p></div>
@@ -1103,49 +1157,49 @@
   </div>
   <div class="tech-grid">
     <div class="tech-card fade-in">
-      <span class="tech-icon">⚡</span>
+      <div class="tech-card-img"><img src="immagini/32_tech_laser_diodo.png" alt="Laser Diodo 808nm"></div>
       <h3>Laser Diodo 808nm</h3>
       <p>Depilazione permanente efficace su tutti i fototipi, anche scuri. Trattamento rapido e indolore.</p>
       <span class="tech-badge">Depilazione Laser</span>
     </div>
     <div class="tech-card fade-in">
-      <span class="tech-icon">🔆</span>
+      <div class="tech-card-img"><img src="immagini/33_tech_hifu7d.png" alt="HIFU 7D"></div>
       <h3>HIFU 7D</h3>
       <p>Ultrasuoni focalizzati ad alta intensità per il lifting viso e corpo più efficace sul mercato.</p>
       <span class="tech-badge">Lifting Non Invasivo</span>
     </div>
     <div class="tech-card fade-in">
-      <span class="tech-icon">〰️</span>
+      <div class="tech-card-img"><img src="immagini/34_tech_radiofrequenza.png" alt="Radiofrequenza Multipolare"></div>
       <h3>Radiofrequenza Multipolare</h3>
       <p>Tecnologia a più poli per un riscaldamento uniforme e profondo. Rassodamento garantito.</p>
       <span class="tech-badge">Rassodamento</span>
     </div>
     <div class="tech-card fade-in">
-      <span class="tech-icon">❄️</span>
+      <div class="tech-card-img"><img src="immagini/35_tech_criolipolisi.png" alt="Criolipolisi Doppia"></div>
       <h3>Criolipolisi Doppia</h3>
       <p>Doppio applicatore per trattare due zone simultaneamente. Fino al 27% di riduzione del grasso.</p>
       <span class="tech-badge">Corpo</span>
     </div>
     <div class="tech-card fade-in">
-      <span class="tech-icon">🌊</span>
+      <div class="tech-card-img"><img src="immagini/36_tech_cavitazione.png" alt="Cavitazione 40KHz"></div>
       <h3>Cavitazione 40KHz</h3>
       <p>Ultrasuoni focalizzati per la distruzione delle cellule adipose. Ideale per cellulite e localizzazioni.</p>
       <span class="tech-badge">Anti-Cellulite</span>
     </div>
     <div class="tech-card fade-in">
-      <span class="tech-icon">🌈</span>
+      <div class="tech-card-img"><img src="immagini/37_tech_ipl.png" alt="IPL Luce Pulsata"></div>
       <h3>IPL Luce Pulsata</h3>
       <p>Trattamento macchie, couperose e foto-ringiovanimento. Pelle uniforme e luminosa.</p>
       <span class="tech-badge">Foto-Ringiovanimento</span>
     </div>
     <div class="tech-card fade-in">
-      <span class="tech-icon">💡</span>
+      <div class="tech-card-img"><img src="immagini/38_tech_led.png" alt="LED Terapia Multipla"></div>
       <h3>LED Terapia Multipla</h3>
       <p>Pannello LED multifunzione con lunghezze d'onda specifiche per ogni esigenza cutanea.</p>
       <span class="tech-badge">Fototerapia</span>
     </div>
     <div class="tech-card fade-in">
-      <span class="tech-icon">🔬</span>
+      <div class="tech-card-img"><img src="immagini/39_tech_microneedling_rf.png" alt="Microneedling RF"></div>
       <h3>Microneedling RF</h3>
       <p>Combinazione di microaghi e radiofrequenza per rinnovamento cutaneo profondo e sicuro.</p>
       <span class="tech-badge">Ringiovanimento</span>
@@ -1163,21 +1217,25 @@
   </div>
   <div class="metodo-grid fade-in" style="margin-top:50px;">
     <div class="step">
+      <div class="step-img"><img src="immagini/40_metodo_consulenza.png" alt="Consulenza"></div>
       <span class="step-num">01</span>
       <h3>Consulenza</h3>
       <p>Analizziamo la tua pelle, il tuo stile di vita e i tuoi obiettivi. La consulenza è sempre gratuita e senza impegno.</p>
     </div>
     <div class="step">
+      <div class="step-img"><img src="immagini/41_metodo_diagnosi.png" alt="Diagnosi"></div>
       <span class="step-num">02</span>
       <h3>Diagnosi</h3>
       <p>Utilizziamo strumenti diagnostici professionali per valutare lo stato della tua pelle e identificare il trattamento più adatto.</p>
     </div>
     <div class="step">
+      <div class="step-img"><img src="immagini/42_metodo_trattamento.png" alt="Trattamento"></div>
       <span class="step-num">03</span>
       <h3>Trattamento</h3>
       <p>Eseguiamo il protocollo personalizzato con le tecnologie più avanzate, nel massimo comfort e sicurezza.</p>
     </div>
     <div class="step">
+      <div class="step-img"><img src="immagini/43_metodo_followup.png" alt="Follow-up"></div>
       <span class="step-num">04</span>
       <h3>Follow-up</h3>
       <p>Ti seguiamo nel tempo con controlli periodici e consigli per mantenere e amplificare i risultati ottenuti.</p>
@@ -1203,27 +1261,18 @@
     </div>
     <div class="ba-grid fade-in">
       <div class="ba-card">
-        <div class="ba-card-inner">
-          <div class="ba-icon">✨</div>
-          <p>Galleria risultati<br><small>Le foto verranno inserite previa autorizzazione delle clienti</small></p>
-        </div>
-        <div class="ba-label">Prima &amp; Dopo</div>
+        <img src="immagini/05_risultati_filler_labbra.png" alt="Filler Labbra">
+        <div class="ba-label">Risultato</div>
         <div class="ba-treatment"><h4>Filler Labbra</h4><p>Acido ialuronico — 1 seduta</p></div>
       </div>
       <div class="ba-card">
-        <div class="ba-card-inner">
-          <div class="ba-icon">💆</div>
-          <p>Galleria risultati<br><small>Le foto verranno inserite previa autorizzazione delle clienti</small></p>
-        </div>
-        <div class="ba-label">Prima &amp; Dopo</div>
+        <img src="immagini/06_risultati_botox_viso.png" alt="Botox Frontale">
+        <div class="ba-label">Risultato</div>
         <div class="ba-treatment"><h4>Botox Frontale</h4><p>Tossina botulinica — effetto naturale</p></div>
       </div>
       <div class="ba-card">
-        <div class="ba-card-inner">
-          <div class="ba-icon">🌟</div>
-          <p>Galleria risultati<br><small>Le foto verranno inserite previa autorizzazione delle clienti</small></p>
-        </div>
-        <div class="ba-label">Prima &amp; Dopo</div>
+        <img src="immagini/07_risultati_criolipolisi_corpo.png" alt="Criolipolisi Addome">
+        <div class="ba-label">Risultato</div>
         <div class="ba-treatment"><h4>Criolipolisi Addome</h4><p>4 settimane di risultati</p></div>
       </div>
     </div>
@@ -1332,14 +1381,14 @@
 <section id="team">
   <div class="fade-in" style="text-align:center;max-width:600px;margin:0 auto 50px;">
     <p class="section-tag">✦ Il Nostro Team</p>
-    <h2 class="section-title">Professioniste<br>al tuo <span>servizio</span></h2>
+    <h2 class="section-title">Professionisti<br>al tuo <span>servizio</span></h2>
     <div class="section-line" style="margin:0 auto;"></div>
     <p class="section-desc" style="margin:0 auto;">Medici, estetiste e specialisti formati con i migliori standard internazionali, appassionati di bellezza e costantemente aggiornati.</p>
   </div>
   <div class="team-grid">
     <div class="team-card fade-in">
-      <div class="team-photo"><span>👩‍⚕️</span></div>
-      <h3>Dott.ssa Diana R.</h3>
+      <div class="team-photo"><img src="immagini/02_team_dalila.png" alt="Dalila"></div>
+      <h3>Dalila</h3>
       <div class="role">Medico Estetico — Direttrice</div>
       <p>Specializzata in medicina estetica con oltre 10 anni di esperienza. Master in tecniche iniettive e ringiovanimento non invasivo.</p>
       <div class="team-specialties">
@@ -1350,8 +1399,8 @@
       </div>
     </div>
     <div class="team-card fade-in">
-      <div class="team-photo"><span>👩‍🎨</span></div>
-      <h3>Valentina B.</h3>
+      <div class="team-photo"><img src="immagini/03_team_nali.png" alt="Nali"></div>
+      <h3>Nali</h3>
       <div class="role">Estetista Senior — PMU Artist</div>
       <p>Esperta in trucco semipermanente, extension ciglia e trattamenti viso. Certificata dalle principali scuole europee di estetica avanzata.</p>
       <div class="team-specialties">
@@ -1362,15 +1411,15 @@
       </div>
     </div>
     <div class="team-card fade-in">
-      <div class="team-photo"><span>👩‍💼</span></div>
-      <h3>Alessia M.</h3>
-      <div class="role">Body Specialist</div>
-      <p>Specializzata in trattamenti corpo, massaggi terapeutici e tecnologie avanzate (criolipolisi, HIFU, radiofrequenza). Terapista certificata.</p>
+      <div class="team-photo"><img src="immagini/04_team_cammo.png" alt="Cammo"></div>
+      <h3>Cammo</h3>
+      <div class="role">Responsabile Infrastruttura</div>
+      <p>Gestisce e sviluppa l'infrastruttura digitale e tecnologica del centro. Garantisce che ogni sistema funzioni in modo sicuro ed efficiente.</p>
       <div class="team-specialties">
-        <span class="specialty-tag">Criolipolisi</span>
-        <span class="specialty-tag">HIFU</span>
-        <span class="specialty-tag">Massaggi</span>
-        <span class="specialty-tag">RF</span>
+        <span class="specialty-tag">Infrastruttura</span>
+        <span class="specialty-tag">Tecnologia</span>
+        <span class="specialty-tag">Sistemi</span>
+        <span class="specialty-tag">Digitale</span>
       </div>
     </div>
   </div>
@@ -1556,6 +1605,30 @@
   window.addEventListener('load', () => {
     setTimeout(() => document.getElementById('loader').classList.add('hidden'), 800);
   });
+
+  // ABOUT — ciclo immagine / video logo
+  (function() {
+    const img   = document.getElementById('about-img');
+    const video = document.getElementById('about-video');
+    if (!img || !video) return;
+
+    function showVideo() {
+      img.style.opacity   = '0';
+      video.style.opacity = '1';
+      video.currentTime   = 0;
+      video.play();
+    }
+
+    function showImage() {
+      video.style.opacity = '0';
+      img.style.opacity   = '1';
+      video.pause();
+      setTimeout(showVideo, 10000);
+    }
+
+    video.addEventListener('ended', showImage);
+    setTimeout(showVideo, 10000);
+  })();
 
   // NAV SCROLL
   const navbar = document.getElementById('navbar');
