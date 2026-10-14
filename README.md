@@ -10,6 +10,7 @@
 [![Zero build](https://img.shields.io/badge/HTML·CSS·JS-zero_build-e8c074?style=flat-square&labelColor=0b0710)](index.html)
 [![Nessun CDN](https://img.shields.io/badge/font_e_icone-in_casa-8fd8b8?style=flat-square&labelColor=0b0710)](#-leggero-e-rispettoso)
 [![Immagini](https://img.shields.io/badge/immagini-−98%25-f2a7c3?style=flat-square&labelColor=0b0710)](#-leggero-e-rispettoso)
+[![Discord](https://img.shields.io/badge/Discord-DaProd-5865F2?logo=discord&logoColor=white)](https://discord.gg/Njs52aacwq)
 
 **[🌐 Sito](https://cammo22.github.io/ProgettoDiana/)** ·
 **[✨ Trova il tuo rituale](https://cammo22.github.io/ProgettoDiana/#rituale)** ·
